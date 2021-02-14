@@ -8,7 +8,7 @@ import "./libraries/PercentageMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract RouterFactory {
+contract Factory {
     using SafeMath for uint256;
     using PercentageMath for uint256;
     address public offchainExecutor;
@@ -17,7 +17,6 @@ contract RouterFactory {
     // 0.01% = 0.01 * 1e4(PERCENTAGE_FACTOR)
     uint256 public FEE_PERCENT = 100;
 
-    // Uniswap Router Kovan: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
     constructor(address _offchainExecutor, address _uniswapRouterAddr) {
         offchainExecutor = _offchainExecutor;
         uniswapRouterAddress = _uniswapRouterAddr;

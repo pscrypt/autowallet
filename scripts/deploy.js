@@ -19,13 +19,12 @@ async function main() {
         deployer.address
     );
 
-    // We get the contract to deploy
-    const RouterFactory = await hre.ethers.getContractFactory("RouterFactory");
-    const routerFactory = await RouterFactory.deploy(deployer.address);
+    const Factory = await hre.ethers.getContractFactory("Factory");
+    const factory = await Factory.deploy(deployer.address);
 
-    await routerFactory.deployed();
+    await factory.deployed();
 
-    console.log("Router factory deployed to:", routerFactory.address);
+    console.log("Deployed factory contract to:", factory.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

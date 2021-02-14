@@ -1,18 +1,19 @@
 const { expect } = require("chai");
 
 describe("RouterFactory", () => {
-    it("Should return the new greeting once it's changed", async () => {
+    it("Should deploy the contract correctly", async () => {
         const [deployer] = await ethers.getSigners();
-        console.log(
-            "Deploying contracts with the account:",
+
+        const uniswapKovanRouterAddr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+
+        const Factory = await hre.ethers.getContractFactory("Factory");
+
+        const factory = await Factory.deploy(
             deployer.address,
+            uniswapKovanRouterAddr,
         );
 
-        // We get the contract to deploy
-        const RouterFactory = await hre.ethers.getContractFactory("RouterFactory");
-        const routerFactory = await RouterFactory.deploy(deployer.address);
-
-        await routerFactory.deployed();
-        expect(await routerFactory.offchainExecutor()).to.equal(deployer.address);
+        await factory.deployed();
+        expect(await factory.offchainExecutor()).to.equal(deployer.address);
     });
 });
