@@ -4,13 +4,13 @@ describe("RouterFactory", () => {
     it("Should deploy the contract correctly", async () => {
         const [deployer] = await ethers.getSigners();
 
-        const uniswapKovanRouterAddr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+        const bscswapTestnetRouterAddr = "0xd954551853F55deb4Ae31407c423e67B1621424A";
 
         const Factory = await hre.ethers.getContractFactory("Factory");
 
         const factory = await Factory.deploy(
             deployer.address,
-            uniswapKovanRouterAddr,
+            bscswapTestnetRouterAddr,
         );
 
         await factory.deployed();

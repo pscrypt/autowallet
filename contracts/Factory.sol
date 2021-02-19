@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./Wallet.sol";
 import "./interfaces/IWallet.sol";
-import "./interfaces/IUniswapV2Router02.sol";
+import "./interfaces/IBscswapV2Router02.sol";
 import "./libraries/PercentageMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -12,15 +12,15 @@ contract Factory {
     using SafeMath for uint256;
     using PercentageMath for uint256;
     address public offchainExecutor;
-    address internal uniswapRouterAddress;
-    IUniswapV2Router02 internal uniswapRouter;
+    address internal bscSwapRouterAddress;
+    IBscswapV2Router02 internal bscSwapRouter;
     // 0.01% = 0.01 * 1e4(PERCENTAGE_FACTOR)
-    uint256 public FEE_PERCENT = 100;
+    uint256 internal FEE_PERCENT = 100;
 
-    constructor(address _offchainExecutor, address _uniswapRouterAddr) {
+    constructor(address _offchainExecutor, address _bscSwapRouterAddr) {
         offchainExecutor = _offchainExecutor;
-        uniswapRouterAddress = _uniswapRouterAddr;
-        uniswapRouter = IUniswapV2Router02(_uniswapRouterAddr);
+        bscSwapRouterAddress = _bscSwapRouterAddr;
+        bscSwapRouter = IBscswapV2Router02(_bscSwapRouterAddr);
     }
 
     struct WalletToken {
@@ -100,20 +100,20 @@ contract Factory {
         _tokens[1] = _receivingToken;
 
         uint256[] memory _reserveAmounts =
-            uniswapRouter.getAmountsOut(_amount, _tokens);
+            bscSwapRouter.getAmountsOut(_amount, _tokens);
 
         uint256 _amountOut =
-            uniswapRouter.getAmountOut(
+            bscSwapRouter.getAmountOut(
                 _amount,
                 _reserveAmounts[0],
                 _reserveAmounts[1]
             );
 
-        IERC20(_token).approve(uniswapRouterAddress, _amount);
+        IERC20(_token).approve(bscSwapRouterAddress, _amount);
 
         // Swap Tokens
         uint256[] memory returnAmount =
-            uniswapRouter.swapExactTokensForTokens(
+            bscSwapRouter.swapExactTokensForTokens(
                 _amount,
                 _amountOut.mul(90).div(100),
                 _tokens,
